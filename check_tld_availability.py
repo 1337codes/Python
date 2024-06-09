@@ -11,12 +11,12 @@ def check_tld_availability(base_name, tld_file="tlds.txt"):
         for tld in file:
             tld = tld.strip()
             domain = base_name + tld
-            print(f"Checking: {domain}")  # Verbose output
+            print(f"Checking: {domain}") 
             try:
                 whois.whois(domain)
             except whois.parser.PywhoisError:
                 available_tlds.append(domain)
-                print(f"Available: {domain}")  # Verbose output
+                print(f"\033[92mAvailable: {domain}\033[0m")  # Green color
 
             checked += 1
             if checked % 10 == 0:
