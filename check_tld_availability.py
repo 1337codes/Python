@@ -9,12 +9,14 @@ def check_tld_availability(base_name, tld_file="tlds.txt"):
 
     with open(tld_file, "r") as file:
         for tld in file:
-            tld = tld.strip()  # Remove any leading/trailing whitespace (e.g., newlines)
+            tld = tld.strip()
             domain = base_name + tld
+            print(f"Checking: {domain}")  # Verbose output
             try:
                 whois.whois(domain)
             except whois.parser.PywhoisError:
                 available_tlds.append(domain)
+                print(f"Available: {domain}")  # Verbose output
 
             checked += 1
             if checked % 10 == 0:
@@ -31,8 +33,10 @@ if __name__ == "__main__":
     available_domains = check_tld_availability(base_name, tld_file)
 
     if available_domains:
-        print("Available domains:")
-        for domain in available_domains:
-            print(domain)
+        with open("results.txt", "w") as outfile:
+            outfile.write("Available domains:\n")
+            for domain in available_domains:
+                outfile.write(domain + "\n")
+        print("\nResults also saved to results.txt")
     else:
         print("No available domains found for the given base name.")
